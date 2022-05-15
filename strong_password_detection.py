@@ -1,15 +1,18 @@
 import re
 
 
-def strip_string(string: str, chars='') -> bool:
-    if chars:
-        string = string.strip()
-        string_regex = re.compile(chars)
-        return string_regex.sub('', string)
-    strip_regex = re.compile(r'\S[\d\w\s]*\S')
-    match_obj = strip_regex.findall(string)
+def is_strong_password(password: str) -> bool:
+    lower_case_alpha = re.compile(r'([a-z]+)')
+    upper_case_alpha = re.compile(r'([A-Z]+)')
+    digits = re.compile(r'([0-9]+)')
+    special_chars = re.compile(r'([@#$%^&*!]+)')
+    regTup = (lower_case_alpha, upper_case_alpha, digits, special_chars)
+    if len(password) >= 8:
+        for regexp in regTup:
+            if not regexp.findall(password):
+                return False
+        return True
+    return False
 
-    return ''.join(match_obj)
 
-
-print(strip_string(' ab c',"c"))
+print(is_strong_password('Aabaaaaaaa123sssss'))
